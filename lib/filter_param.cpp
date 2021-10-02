@@ -666,3 +666,38 @@ vector<double> FilterParam::init_stable_coef(const double a0, const double a) co
 	return coef;
 }
 
+void FilterParam::gprint_amp(const vector<double> &coef) const
+{
+	int i = 0;
+
+	auto freq_res = FilterParam::freq_res(coef);
+
+	//gnuplotで出力
+    FILE *gp = popen("gnuplot -persist", "w");
+    fprintf(gp, "set terminal pngcairo\n");
+	fprintf(gp, "set output 'Amplitude.png'\n");
+    fprintf(gp, "set xlabel 'Nomalized angular frequeny'\n"); //正規化角周波数
+    fprintf(gp, "set ylabel 'Magnitude [dB]'\n");
+	fprintf(gp, "set key font 'Times New Roman, 10.0'\n");
+	fprintf(gp, "set xlabel font 'Times New Roman,12'\n");
+	fprintf(gp, "set ylabel font 'Times New Roman,12'\n");
+	fprintf(gp, "set tics font 'Times New Roman,10'\n");
+	fprintf(gp, "set xtics 0, 0.1pi, pi\n");
+	fprintf(gp, "set xrange [0:pi]\n");
+	fprintf(gp, "set format x '%.1Pπ'\n");
+    fprintf(gp, "plot '-' with lines title \"\n");
+
+   	for(auto band_res :freq_res) //for(要素変数の宣言:範囲)
+	{
+		for(auto res :band_res)
+		{
+            i += 1;
+			printf("%lf %f\n", i*(M_PI/250), log10(abs(res)));
+			fprintf(gp,"%lf %f\n", i*(M_PI/250), log10(abs(res)));
+		}
+	}
+
+   	fprintf(gp, "e\n");
+
+    pclose(gp);
+}

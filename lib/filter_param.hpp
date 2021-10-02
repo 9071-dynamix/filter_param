@@ -189,6 +189,7 @@ public:
 	double evaluate(const vector<double>&) const;
 	vector<double> init_coef(const double, const double, const double) const;
 	vector<double> init_stable_coef(const double, const double) const;
+	void gprint_amp(const vector<double>&) const;
 
 	// static function
 	

@@ -28,13 +28,13 @@ void test_FilterParam_judge_stability_odd();
 void test_FilterParam_evaluate_objective_function();
 void test_FilterParam_init_coef();
 void test_FilterParam_init_stable_coef();
+void test_FilterParam_amplitude();
 
 int main(void)
 {
 	printf("example run\n");
 
-//	test_FilterParam_init_coef();
-	test_FilterParam_init_stable_coef();
+	test_FilterParam_amplitude();
 
 	return 0;
 }
@@ -599,4 +599,30 @@ void test_FilterParam_init_stable_coef()
 		}
 		printf("\n");
 	}
+}
+
+void test_FilterParam_amplitude()
+{
+	vector<double> coef
+	{
+		0.025247504683641238,
+
+		0.8885952985540255,
+		-4.097963802039866,
+		5.496940685423355,
+		0.3983519261092186,
+		0.9723236917140877,
+		1.1168784833810899,
+		0.8492039597182939,
+
+		-0.686114259307724,
+		0.22008381076439384,
+		-0.22066728558327908,
+		0.7668032045079851
+	};
+
+	auto bands = FilterParam::gen_bands(FilterType::LPF, 0.2, 0.275);
+	FilterParam Fparam(7,4,bands,200,50,5.0);
+
+	Fparam.gprint_amp(coef);
 }
